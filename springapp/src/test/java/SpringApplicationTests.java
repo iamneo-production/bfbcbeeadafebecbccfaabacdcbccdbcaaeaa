@@ -1,17 +1,15 @@
-package ai.iamneo.testing.Testing_Selenium_TestNg;
+
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
 @SpringBootTest
-public class AppTest {
+public class SpringApplicationTests {
 
     @Autowired
     private WebDriver driver;
@@ -19,7 +17,7 @@ public class AppTest {
     @Bean
     public WebDriver getWebDriver() {
         // Set the path to the ChromeDriver executable
-        System.setProperty("webdriver.chrome.driver", "path_to_chromedriver");
+        System.setProperty("webdriver.chrome.driver", "http://localhost:8080");
         return new ChromeDriver();
     }
 
