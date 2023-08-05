@@ -4,15 +4,14 @@ import org.openqa.selenium.interactions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-@Configuration
-@ContextConfiguration(classes = AppTest.class)
-public class AppTest {
+
+@Configuration(proxyBeanMethods = SpringApplicationTests.class != null)
+public class SpringApplicationTests {
 
     @Autowired
     private WebDriver driver;
