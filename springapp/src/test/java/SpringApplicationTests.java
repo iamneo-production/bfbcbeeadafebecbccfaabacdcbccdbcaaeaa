@@ -1,24 +1,26 @@
+package ai.iamneo.testing.Testing_Selenium_TestNg;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.*;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-
-@Configuration(proxyBeanMethods = SpringApplicationTests.class != null)
-public class SpringApplicationTests {
+@SpringBootTest
+public class AppTest {
 
     @Autowired
     private WebDriver driver;
 
-    @BeforeTest
-    public void beforeTest() {
-        driver.manage().window().maximize();
+    @Bean
+    public WebDriver getWebDriver() {
+        // Set the path to the ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "path_to_chromedriver");
+        return new ChromeDriver();
     }
 
     @Test
@@ -43,13 +45,7 @@ public class SpringApplicationTests {
 
     @AfterTest
     public void afterTest() {
+        // Close the browser
         driver.quit();
-    }
-
-    @Bean
-    public WebDriver getWebDriver() {
-        // Set the path to the ChromeDriver executable
-        System.setProperty("webdriver.chrome.driver", "http://localhost:8080");
-        return new ChromeDriver();
     }
 }
