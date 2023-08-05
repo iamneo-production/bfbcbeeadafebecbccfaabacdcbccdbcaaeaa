@@ -3,11 +3,13 @@ package com.examly.springapp;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.net.URL;
 import org.junit.Test; 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.WebServer;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,69 +19,48 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest(classes = SpringappApplication.class)
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class SpringApplicationTests {
+public class SpringApplicationTests<ChromeOptions> {
 
 	@Autowired
     private MockMvc mockMvc;	
 
-	//Add A New Task
-	@Test
-    public void test_case1() throws Exception {
+	ChromeOptions chromeOptions = new ChromeOptions();
+	WebServer driver = null;
+
+	@BeforeTest
+	public void beforeTest() throws Exception {
 		
-		String dataOne = "{\"taskId\":\"12211\",\"taskHolderName\":\"Gowthaman M\",\"taskDate\":\"4/15/2021\",\"taskName\":\"Spring Projects\",\"taskStatus\":\"In Progress\"}";
-	 	mockMvc.perform(MockMvcRequestBuilders.post("/saveTask")
-	 			.contentType(MediaType.APPLICATION_JSON)
-	 			.content(dataOne)
-	 			.accept(MediaType.APPLICATION_JSON))
-	        	.andExpect(status().isOk())
-	        	.andReturn();
-	 	
-    }
-	
-	
-	//Get All Task
-	@Test
-    public void test_case2() throws Exception {
-		
-	 	mockMvc.perform(MockMvcRequestBuilders.get("/alltasks")
-	 			.contentType(MediaType.APPLICATION_JSON)
-	 			.accept(MediaType.APPLICATION_JSON))
-	        	.andExpect(status().isOk())
-		        .andExpect(MockMvcResultMatchers.jsonPath("$[*].houseNo").exists())
-		        .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-	        	.andReturn();
-	 	
-    }
-	
-	//Get A Task By ID
-	@Test
-	public void test_case3() throws Exception {
-		
-		mockMvc.perform(MockMvcRequestBuilders.get("/getTask")
-				.param("taskId","12211")
-				.contentType(MediaType.APPLICATION_JSON)
-		 		.accept(MediaType.APPLICATION_JSON))
-		        .andExpect(status().isOk())
-		        .andExpect(jsonPath("$.taskHolderName").value("Gowthaman M"))
-		        .andExpect(jsonPath("$.taskDate").value("4/15/2021"))
-		        .andExpect(jsonPath("$.taskName").value("Spring Projects"))
-				.andExpect(jsonPath("$.taskStatus").value("In Progress"))
-		        .andReturn();
-			
-	}
-	
-	//Delete A Task
-	@Test
-	public void test_case4() throws Exception {
-		
-		mockMvc.perform(MockMvcRequestBuilders.get("/deleteTask")
-				.param("taskId","12211")
-				.contentType(MediaType.APPLICATION_JSON)
-		 		.accept(MediaType.APPLICATION_JSON))
-		        .andExpect(status().isOk())
-		        .andReturn();
-			
+		driver = new RemoteWebDriver(new URL("http://localhost:4444"), chromeOptions);
 	}
 
+	@Test
+	public void testcase_1() throws InterruptedException 
+{
+		driver.navigate().to("https://jqueryui.com/droppable/");
+		
+		
+		
+	}
 
+	@Test
+	public void testcase_2() throws InterruptedException 
+      {
+		driver.switchTo().frame(0);
+	    WebElement drag= driver.findElement(By.id("draggable"));
+	    WebElement drop=driver.findElement(By.id("droppable"));
+		Actions a=new Actions(driver);
+	    a.dragAndDrop(drag, drop).build().perform();
+	}
+	@Test
+	public void testcase_3() throws InterruptedException 
+      {
+		WebElement drop=driver.findElement(By.id("droppable"));
+		Assert.assertEquals(drop.getText(),"Dropped!");
+	}
+
+		
+	@AfterTest
+	public void afterTest() {
+		driver.quit();
+	}
 }
