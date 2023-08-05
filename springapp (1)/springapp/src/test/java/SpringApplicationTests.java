@@ -8,13 +8,13 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class DragAndDropTest {
+public class SpringApplicationTests {
     private WebDriver driver;
 
     @BeforeMethod
     public void setup() {
         // Set the ChromeDriver executable path
-        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "http://localhost:8080");
 
         // Create a new ChromeDriver instance
         driver = new ChromeDriver();
